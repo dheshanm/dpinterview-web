@@ -71,6 +71,25 @@ export default function AppHeader() {
                 }
             }
         }
+
+        // /interviews/<interviewName>
+        // If interview name is in the path, add it as a breadcrumb
+
+        const interviewPathRegex = /\/interviews\/([^/]+)/
+        const match = pathname.match(interviewPathRegex)
+        if (match) {
+            const interviewName = match[1]
+            const interviewBreadcrumb: Breadcrumb = {
+                title: interviewName,
+                url: `/interviews/${interviewName}`,
+                isActive: pathname === `/interviews/${interviewName}`
+            }
+            // Check if the interview name is already in the breadcrumbs
+            const interviewExists = result.some(crumb => crumb.title === interviewName)
+            if (!interviewExists) {
+                result.push(interviewBreadcrumb)
+            }
+        }
         
         return result
     }, [pathname, navMain])
@@ -81,28 +100,28 @@ export default function AppHeader() {
     }, [generateBreadcrumbs])
 
     return (
-        <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
+        <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-2 border-b px-4 bg-background">
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
-                <BreadcrumbList>
-                    {breadcrumbs.map((crumb, index) => (
-                        <React.Fragment key={crumb.url}>
-                            <BreadcrumbItem className={index === 0 ? "hidden md:block" : ""}>
-                                {crumb.isActive ? (
-                                    <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
-                                ) : (
-                                    <BreadcrumbLink href={crumb.url}>
-                                        {crumb.title}
-                                    </BreadcrumbLink>
-                                )}
-                            </BreadcrumbItem>
-                            {index < breadcrumbs.length - 1 && (
-                                <BreadcrumbSeparator className={index === 0 ? "hidden md:block" : ""} />
-                            )}
-                        </React.Fragment>
-                    ))}
-                </BreadcrumbList>
+            <BreadcrumbList>
+                {breadcrumbs.map((crumb, index) => (
+                <React.Fragment key={crumb.url}>
+                    <BreadcrumbItem className={index === 0 ? "hidden md:block" : ""}>
+                    {crumb.isActive ? (
+                        <BreadcrumbPage>{crumb.title}</BreadcrumbPage>
+                    ) : (
+                        <BreadcrumbLink href={crumb.url}>
+                        {crumb.title}
+                        </BreadcrumbLink>
+                    )}
+                    </BreadcrumbItem>
+                    {index < breadcrumbs.length - 1 && (
+                    <BreadcrumbSeparator className={index === 0 ? "hidden md:block" : ""} />
+                    )}
+                </React.Fragment>
+                ))}
+            </BreadcrumbList>
             </Breadcrumb>
         </header>
     )
