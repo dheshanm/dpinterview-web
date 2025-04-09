@@ -43,7 +43,7 @@ export default function Home() {
                 </div>
 
                 <Typography level="body-md" sx={{ mt: 4 }}>
-                    This project is under active development. Check back for updates or contribute on GitHub.
+                    This project is under active development. Check back for updates or contribute on <Link href="https://github.com/dheshanm/dpinterview-web" target="_blank" sx={{ fontWeight: 'medium' }}>GitHub</Link>.
                 </Typography>
             </div>
         </div>
