@@ -12,6 +12,7 @@ import { Analytics } from '@mui/icons-material';
 import { Skeleton } from '@mui/material';
 
 import { formatDistanceToNow } from 'date-fns';
+import { toast } from "sonner";
 
 import { TimelineEvent } from '@/lib/types/timeline';
 import { InterviewProcessingData } from '@/lib/types/interview';
@@ -31,6 +32,9 @@ export default function InterviewTimelineS(props: InterviewTimelineSProps) {
         const fetchData = async () => {
             const response = await fetch(`/api/v2/interviews/${interviewName}/processing`);
             if (!response.ok) {
+                toast.message('Uh oh! Something went wrong.', {
+                    description: 'Request for interview processing data failed.',
+                })
                 throw new Error('Network response was not ok');
             }
             const data: InterviewProcessingData = await response.json();

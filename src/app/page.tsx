@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Typography from '@mui/joy/Typography';
 import Link from '@mui/material/Link';
 
@@ -29,14 +30,16 @@ export default function Home() {
                             </Typography>
                         </div>
                     </Link>
-                    <div className="border border-l-4 border-l-teal-400 rounded-lg p-4 hover:shadow-md transition-shadow bg-teal-50/30">
-                        <Typography level="h4" sx={{ mb: 2, color: 'text.secondary' }}>
-                            📊 Real-time Monitoring
-                        </Typography>
-                        <Typography level="body-md">
-                            Track performance metrics and health indicators of your audio/video processing systems in real time.
-                        </Typography>
-                    </div>
+                    <Link href="http://localhost:8088" underline="none" color="inherit" target="_blank">
+                        <div className="border border-l-4 border-l-teal-400 rounded-lg p-4 hover:shadow-md transition-shadow bg-teal-50/30">
+                            <Typography level="h4" sx={{ mb: 2, color: 'text.secondary' }}>
+                                📊 Real-time Monitoring
+                            </Typography>
+                            <Typography level="body-md">
+                                Track performance metrics and health indicators of your audio/video processing systems in real time. [Superset]
+                            </Typography>
+                        </div>
+                    </Link>
                 </div>
 
                 <Typography level="body-md" sx={{ mt: 4 }}>

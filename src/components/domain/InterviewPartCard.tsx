@@ -47,7 +47,7 @@ function updateInterviewPart(
     })
         .then(response => {
             if (!response.ok) {
-                console.error(response);
+                // console.error(response);
                 throw new Error('Failed to update interview part');
             }
             return response.json();

@@ -60,7 +60,7 @@ function removeRoles(
     })
     .then(response => {
         if (!response.ok) {
-            console.error(response);
+            // console.error(response);
             throw new Error('Failed to remove roles');
         }
         return response.json();
@@ -98,7 +98,7 @@ function setRole(
     })
     .then(response => {
         if (!response.ok) {
-            console.error(response);
+            // console.error(response);
             throw new Error('Failed to set roles');
         }
         return response.json();
@@ -264,11 +264,17 @@ export default function FileInfoCard(props: FileInfoCardProps) {
                             src={`http://localhost:45000/payload=%5B${props.file_path}%5D`}
                             controls
                             style={{ width: '100%' }}
+                            onError={() => {
+                                toast.error("Failed to load audio file. The file may be missing or the media server is not running.");
+                            }}
                         />
                     ) : (
                         <video
                             src={`http://localhost:45000/payload=%5B${props.file_path}%5D`}
                             controls
+                            onError={() => {
+                                toast.error("Failed to load video file. The file may be missing or the media server is not running.");
+                            }}
                         />
                     )
                 )}

@@ -36,6 +36,16 @@ export const navData = {
                     url: "/issues/unlabelledAudio",
                     isActive: false,
                 },
+                {
+                    title: "Missing Interviews",
+                    url: "/issues/missing",
+                    isActive: false,
+                },
+                {
+                    title: "Missing Transcripts",
+                    url: "/issues/noTranscript",
+                    isActive: false,
+                }
             ],
         },
         {

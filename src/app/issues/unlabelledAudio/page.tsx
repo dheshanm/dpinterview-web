@@ -30,7 +30,7 @@ export default function UnlabelledAudioIssues() {
 
     useEffect(() => {
         // Fetch data from the API
-        fetch('/api/v1/issues/unresolved/audio/unlabelled?limit=1000')
+        fetch('/api/v1/issues/unresolved/audio/unlabelled?limit=2000')
             .then((res) => res.json())
             .then((data) => {
 

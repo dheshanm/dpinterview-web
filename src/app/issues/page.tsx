@@ -35,6 +35,26 @@ export default function Home() {
                             </Typography>
                         </div>
                     </Link>
+                    <Link href="/issues/missing" underline="none" color="inherit">
+                        <div className="border border-l-4 border-l-blue-400 rounded-lg p-4 hover:shadow-md transition-shadow bg-blue-50/30">
+                            <Typography level="h4" sx={{ mb: 2, color: 'text.secondary' }}>
+                                📁 Missing Interviews
+                            </Typography>
+                            <Typography level="body-md">
+                                List interviews with Runsheets marked as conducted, but no data associated with them.
+                            </Typography>
+                        </div>
+                    </Link>
+                    <Link href="/issues/noTranscript" underline="none" color="inherit">
+                        <div className="border border-l-4 border-l-red-400 rounded-lg p-4 hover:shadow-md transition-shadow bg-red-50/30">
+                            <Typography level="h4" sx={{ mb: 2, color: 'text.secondary' }}>
+                                📜 Missing Transcripts
+                            </Typography>
+                            <Typography level="body-md">
+                                List interviews with video / audio data, but no associated transcripts.
+                            </Typography>
+                        </div>
+                    </Link>
                 </div>
 
                 <Typography level="body-md" sx={{ mt: 4, color: 'text.tertiary' }}>

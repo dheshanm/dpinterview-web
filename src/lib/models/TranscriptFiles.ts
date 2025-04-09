@@ -33,4 +33,21 @@ export class InterviewTranscriptFiles {
             };
         });
     }
+
+    static async getTranscriptFile(interview_name: string): Promise<string | null> {
+        const connection = getConnection();
+        const results = await connection.query(
+            `
+            SELECT transcript_file FROM transcript_files
+            WHERE identifier_name =  $1
+            `,
+            [interview_name]
+        );
+
+        if (results.rows.length === 0) {
+            return null;
+        }
+        const transcriptFile = results.rows[0].transcript_file;
+        return transcriptFile;
+    }
 }

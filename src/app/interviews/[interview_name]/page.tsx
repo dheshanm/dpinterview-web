@@ -9,10 +9,9 @@ import Skeleton from '@mui/material/Skeleton';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+// import Backdrop from '@mui/material/Backdrop';
+// import CircularProgress from '@mui/material/CircularProgress';
 
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 
 import Tabs from '@mui/joy/Tabs';
@@ -25,13 +24,14 @@ import type { DescriptionsProps } from 'antd';
 import { Typography as AntTypography } from 'antd';
 import { Empty } from 'antd';
 
-import { Interview, InterviewProcessingData } from '@/lib/types/interview';
+import { Interview } from '@/lib/types/interview';
 import FileInfoCard, { FileInfoCardProps } from '@/components/domain/FileInfoCard';
 import InterviewPartCard, { updateInterviewPartCardProps } from '@/components/domain/InterviewPartCard';
 
-// import InterviewTimeline from '@/components/domain/InterviewTimeline';
 import InterviewTimelineS from '@/components/domain/InterviewTimelineS';
 import InterviewRunsheet from '@/components/domain/InterviewRunsheet';
+import QcForm from '@/components/domain/QcForm';
+import InterviewTranscript from '@/components/domain/InterviewTranscript';
 
 const { Paragraph } = AntTypography;
 
@@ -66,7 +66,7 @@ function interviewPartOnChange(
         return part;
     });
 
-    console.log('Updated interview parts:', updatedParts);
+    // console.log('Updated interview parts:', updatedParts);
 
     setInterview({
         ...interview,
@@ -95,7 +95,7 @@ function interviewFileOnTagsChange(
         parts: updatedFiles,
     };
     setInterview(newInterview);
-    console.log('Updated interview files:', newInterview);
+    // console.log('Updated interview files:', newInterview);
 }
 
 // ts-ignore
@@ -110,7 +110,6 @@ export default function Page({
     const [descriptionItems, setDescriptionItems] = useState<DescriptionsProps['items']>([]);
     const [files, setFiles] = useState<Record<string, Record<string, any>> | null>({});
     const [loading, setLoading] = React.useState(true);
-    const [showBackDrop, setShowBackDrop] = React.useState(false);
 
     const [lastSelectedItem, setLastSelectedItem] = React.useState<string | null>(
         null,
@@ -125,7 +124,7 @@ export default function Page({
 
     useEffect(() => {
         const fetchData = async () => {
-            console.log('Fetching interview data...');
+            // console.log('Fetching interview data...');
             // Get slug from the params
             const { interview_name } = await params;
             setInterview_name(interview_name);
@@ -258,12 +257,12 @@ export default function Page({
 
     return (
         <div className="container mx-auto p-4">
-            <Backdrop
+            {/* <Backdrop
                 sx={(theme) => ({ color: '#fff', zIndex: theme.zIndex.drawer + 1 })}
                 open={showBackDrop}
             >
                 <CircularProgress color="inherit" />
-            </Backdrop>
+            </Backdrop> */}
             <div>
                 <Typography level="h4">
                     Interview Details
@@ -352,11 +351,15 @@ export default function Page({
                             <strong>Further Information</strong>
                         </Typography>
 
-                        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                        <Box
+                        // sx={{ display: { xs: 'block', md: 'none' }}}
+                        >
                             <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ mt: 3 }}>
-                                <TabList disableUnderline>
-                                    <Tab>Interview Timeline</Tab>
-                                    <Tab>Run Sheet</Tab>
+                                <TabList>
+                                    <Tab>⏱️ Interview Timeline</Tab>
+                                    <Tab>📝 Run Sheet</Tab>
+                                    <Tab>🚩 QC Issues</Tab>
+                                    <Tab>🖹 Transcript</Tab>
                                 </TabList>
                                 <TabPanel value={0}>
                                     <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
@@ -372,10 +375,20 @@ export default function Page({
 
                                     <InterviewRunsheet interviewName={interview_name} />
                                 </TabPanel>
+                                <TabPanel value={2}>
+                                    <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
+                                        <strong>QC Issues</strong>
+                                    </Typography>
+
+                                    <QcForm interviewName={interview_name} />
+                                </TabPanel>
+                                <TabPanel value={3}>
+                                    <InterviewTranscript interviewName={interview_name} />
+                                </TabPanel>
                             </Tabs>
                         </Box>
-                        
-                        <Stack 
+
+                        {/* <Stack 
                             direction="row" 
                             spacing={2}
                             sx={{ width: '100%', display: { xs: 'none', md: 'flex' } }}
@@ -395,7 +408,7 @@ export default function Page({
                                 <InterviewRunsheet interviewName={interview_name} />
 
                             </Box>
-                        </Stack>
+                        </Stack> */}
 
                     </div>
                 ) : (
@@ -404,6 +417,14 @@ export default function Page({
 
                         <div className='m-32'>
                             <Empty description="No interview data available" />
+                        </div>
+
+                        <div className='mb-32'>
+                            <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
+                                <strong>Run Sheet</strong>
+                            </Typography>
+
+                            <InterviewRunsheet interviewName={interview_name} />
                         </div>
                     </div>
                 )
