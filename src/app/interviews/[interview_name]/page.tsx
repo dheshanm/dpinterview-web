@@ -3,6 +3,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 import Typography from '@mui/joy/Typography';
+
 import Alert from '@mui/material/Alert';
 import Skeleton from '@mui/material/Skeleton';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
@@ -10,6 +11,14 @@ import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
+
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+
+import Tabs from '@mui/joy/Tabs';
+import TabList from '@mui/joy/TabList';
+import Tab from '@mui/joy/Tab';
+import TabPanel from '@mui/joy/TabPanel';
 
 import { Descriptions } from 'antd';
 import type { DescriptionsProps } from 'antd';
@@ -20,7 +29,9 @@ import { Interview, InterviewProcessingData } from '@/lib/types/interview';
 import FileInfoCard, { FileInfoCardProps } from '@/components/domain/FileInfoCard';
 import InterviewPartCard, { updateInterviewPartCardProps } from '@/components/domain/InterviewPartCard';
 
-import InterviewTimeline from '@/components/domain/InterviewTimeline';
+// import InterviewTimeline from '@/components/domain/InterviewTimeline';
+import InterviewTimelineS from '@/components/domain/InterviewTimelineS';
+import InterviewRunsheet from '@/components/domain/InterviewRunsheet';
 
 const { Paragraph } = AntTypography;
 
@@ -94,7 +105,7 @@ export default function Page({
     params: Promise<{ interview_name: string }>
 }) {
     const [interviews, setInterviews] = useState<Interview | null>(null);
-    const [interviewProcessingData, setInterviewProcessingData] = useState<InterviewProcessingData | null>(null);
+    // const [interviewProcessingData, setInterviewProcessingData] = useState<InterviewProcessingData | null>(null);
     const [interview_name, setInterview_name] = useState<string>('');
     const [descriptionItems, setDescriptionItems] = useState<DescriptionsProps['items']>([]);
     const [files, setFiles] = useState<Record<string, Record<string, any>> | null>({});
@@ -128,12 +139,12 @@ export default function Page({
             setInterviews(data);
             setLoading(false);
 
-            // Fetch interview processing data
-            const processingDataResponse = await fetch(`/api/v2/interviews/${interview_name}/processing`);
-            if (processingDataResponse.ok) {
-                const processingData: InterviewProcessingData = await processingDataResponse.json();
-                setInterviewProcessingData(processingData);
-            }
+            // // Fetch interview processing data
+            // const processingDataResponse = await fetch(`/api/v2/interviews/${interview_name}/processing`);
+            // if (processingDataResponse.ok) {
+            //     const processingData: InterviewProcessingData = await processingDataResponse.json();
+            //     setInterviewProcessingData(processingData);
+            // }
         };
         fetchData();
     }, [params])
@@ -284,10 +295,10 @@ export default function Page({
                     </div>
 
                     <Typography level="title-lg" sx={{ mt: 3 }}>
-                        <strong>Interview Timeline</strong>
+                        <strong>Further Information</strong>
                     </Typography>
 
-                    <Skeleton variant="rectangular" sx={{ height: 400 }} />
+                    <Skeleton variant="rectangular" sx={{ height: 400, mt: 4 }} />
                 </div>
             ) : (
                 interviews ? (
@@ -338,14 +349,54 @@ export default function Page({
                         </SimpleTreeView>
 
                         <Typography level="title-lg" sx={{ mt: 3 }}>
-                            <strong>Interview Timeline</strong>
+                            <strong>Further Information</strong>
                         </Typography>
 
-                        {interviewProcessingData ? (
-                            <InterviewTimeline processingData={interviewProcessingData} />
-                        ) : (
-                            <Skeleton variant="rectangular" height={500} sx={{ mt: 2 }} />
-                        )}
+                        <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+                            <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ mt: 3 }}>
+                                <TabList disableUnderline>
+                                    <Tab>Interview Timeline</Tab>
+                                    <Tab>Run Sheet</Tab>
+                                </TabList>
+                                <TabPanel value={0}>
+                                    <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
+                                        <strong>Interview Timeline</strong>
+                                    </Typography>
+
+                                    <InterviewTimelineS interviewName={interview_name} />
+                                </TabPanel>
+                                <TabPanel value={1}>
+                                    <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
+                                        <strong>Run Sheet</strong>
+                                    </Typography>
+
+                                    <InterviewRunsheet interviewName={interview_name} />
+                                </TabPanel>
+                            </Tabs>
+                        </Box>
+                        
+                        <Stack 
+                            direction="row" 
+                            spacing={2}
+                            sx={{ width: '100%', display: { xs: 'none', md: 'flex' } }}
+                        >
+                            <Box sx={{ width: '50%' }}>
+                                <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
+                                    <strong>Interview Timeline</strong>
+                                </Typography>
+
+                                <InterviewTimelineS interviewName={interview_name} />
+                            </Box>
+                            <Box sx={{ width: '50%' }}>
+                                <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
+                                    <strong>Run Sheet</strong>
+                                </Typography>
+
+                                <InterviewRunsheet interviewName={interview_name} />
+
+                            </Box>
+                        </Stack>
+
                     </div>
                 ) : (
                     <div>
