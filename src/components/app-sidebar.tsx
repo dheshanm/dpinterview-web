@@ -1,30 +1,38 @@
+"use client"
 // Reference:
 // https://ui.shadcn.com/blocks/sidebar
 import * as React from "react"
-import { GalleryVerticalEnd } from "lucide-react"
+import {
+    GalleryVerticalEnd,
+    Github,
+    LayoutDashboard,
+    MessageSquareWarning,
+    Video
+} from "lucide-react"
 
 import Link from "next/link"
 
 import {
     Sidebar,
     SidebarContent,
-    SidebarGroup,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
-    SidebarMenuSub,
-    SidebarMenuSubButton,
-    SidebarMenuSubItem,
     SidebarRail,
 } from "@/components/ui/sidebar"
+
+import { NavMain } from "@/components/nav-main"
+import { NavSecondary } from "@/components/nav-secondary"
 
 
 export const navData = {
     navMain: [
         {
             title: "Issues",
+            icon: MessageSquareWarning,
             url: "/issues",
+            isActive: true,
             items: [
                 {
                     title: "Multi-Part Interviews",
@@ -50,8 +58,21 @@ export const navData = {
         },
         {
             title: "Interviews",
+            icon: Video,
             url: "/interviews",
             items: [],
+        },
+    ],
+    navSecondary: [
+        {
+            title: "GitHub",
+            url: "https://github.com/dheshanm/dpinterview-web",
+            icon: Github,
+        },
+        {
+            title: "Superset",
+            url: "http://localhost:8088",
+            icon: LayoutDashboard,
         },
     ],
 }
@@ -59,7 +80,7 @@ export const navData = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
-        <Sidebar {...props}>
+        <Sidebar collapsible="icon" {...props}>
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
@@ -78,30 +99,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <SidebarGroup>
-                    <SidebarMenu>
-                        {navData.navMain.map((item) => (
-                            <SidebarMenuItem key={item.title}>
-                                <SidebarMenuButton asChild>
-                                    <a href={item.url} className="font-medium">
-                                        {item.title}
-                                    </a>
-                                </SidebarMenuButton>
-                                {item.items?.length ? (
-                                    <SidebarMenuSub>
-                                        {item.items.map((item) => (
-                                            <SidebarMenuSubItem key={item.title}>
-                                                <SidebarMenuSubButton asChild isActive={item.isActive}>
-                                                    <a href={item.url}>{item.title}</a>
-                                                </SidebarMenuSubButton>
-                                            </SidebarMenuSubItem>
-                                        ))}
-                                    </SidebarMenuSub>
-                                ) : null}
-                            </SidebarMenuItem>
-                        ))}
-                    </SidebarMenu>
-                </SidebarGroup>
+                <NavMain items={navData.navMain} />
+                <NavSecondary items={navData.navSecondary} className="mt-auto" />
             </SidebarContent>
             <SidebarRail />
         </Sidebar>
