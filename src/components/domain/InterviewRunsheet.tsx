@@ -132,14 +132,25 @@ export default function InterviewRunsheet(props: InterviewRunsheetProps) {
                     <h3 className="text-md font-semibold text-gray-800">
                         {usingClosestRunsheet ? "Closest Runsheet" : "Runsheet"}
                     </h3>
-                    <p className="text-md text-gray-500">
-                        {formData.interview_name}
-                    </p>
+                    <div className="flex items-center gap-2 ml-2 text-gray-600">
+                        <span className="font-medium">{formData.interview_name}</span>
+                        <Chip
+                            color="neutral"
+                            variant="outlined"
+                            size='lg'
+                        >
+                            {formData.event_name}
+                        </Chip>
+                        {/* <span className="text-gray-400">•</span>
+                        <span className="italic">{formData.event_name}</span> */}
+                    </div>
                     {usingClosestRunsheet && (
                         <Chip
                             color="warning"
                             variant="solid"
-                        > Not Exact Match </Chip>
+                        >
+                            Not Exact Match
+                        </Chip>
                     )}
                 </div>
             ) : (
