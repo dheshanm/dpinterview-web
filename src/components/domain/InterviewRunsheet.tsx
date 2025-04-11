@@ -135,10 +135,12 @@ export default function InterviewRunsheet(props: InterviewRunsheetProps) {
                     <p className="text-md text-gray-500">
                         {formData.interview_name}
                     </p>
-                    <Chip
-                        color="warning"
-                        variant="solid"
-                    > Not Exact Match </Chip>
+                    {usingClosestRunsheet && (
+                        <Chip
+                            color="warning"
+                            variant="solid"
+                        > Not Exact Match </Chip>
+                    )}
                 </div>
             ) : (
                 <Skeleton variant="text" width={200} height={30} />

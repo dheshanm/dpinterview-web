@@ -359,7 +359,7 @@ export default function Page({
                                     <Tab>⏱️ Interview Timeline</Tab>
                                     <Tab>📝 Run Sheet</Tab>
                                     <Tab>🚩 QC Issues</Tab>
-                                    <Tab>🖹 Transcript</Tab>
+                                    <Tab>📄 Transcript</Tab>
                                 </TabList>
                                 <TabPanel value={0}>
                                     <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
