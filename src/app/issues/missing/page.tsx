@@ -51,7 +51,7 @@ export default function Issues() {
                 const props: MuiDataGridProps = {
                     columns,
                     rows: gridRows,
-                    height: 650,
+                    height: 670,
                     pageSizeOptions: [10, 20],
                     selectable: true
                 };

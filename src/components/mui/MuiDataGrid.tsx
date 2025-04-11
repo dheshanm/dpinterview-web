@@ -2,7 +2,7 @@
 // https://mui.com/x/react-data-grid/
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid';
 
 
 export type MuiDataGridProps = {
@@ -43,6 +43,7 @@ export default function MuiDataGrid(props: MuiDataGridProps) {
             }}
             pageSizeOptions={props.pageSizeOptions}
             checkboxSelection={props.selectable}
+            slots={{ toolbar: GridToolbar }}
             />
         </Box>
     );
