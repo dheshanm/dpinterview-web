@@ -50,10 +50,15 @@ export const navData = {
                     isActive: false,
                 },
                 {
+                    title: "Missing Runsheets",
+                    url: "/issues/noRunsheet",
+                    isActive: false,
+                },
+                {
                     title: "Missing Transcripts",
                     url: "/issues/noTranscript",
                     isActive: false,
-                }
+                },
             ],
         },
         {
