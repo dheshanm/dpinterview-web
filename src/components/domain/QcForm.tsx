@@ -193,19 +193,38 @@ export default function QcForm(
                                             { value: "audio_sync", label: "Audio Out of Sync" },
                                             { value: "other", label: "Other" },
                                         ].map((issue) => (
-                                            <div key={issue.value} className="flex items-center space-x-2 p-2 rounded border bg-white ">
-                                                <Checkbox
-                                                    checked={field.value?.includes(issue.value)}
-                                                    onCheckedChange={(checked) => {
+                                            <div key={issue.value} className="flex items-center space-x-2 p-2 rounded border bg-white">
+                                                {(() => {
+                                                    const toggleIssue = () => {
+                                                        const checked = !field.value?.includes(issue.value);
                                                         const updatedIssues = checked
                                                             ? [...(field.value || []), issue.value]
                                                             : (field.value || []).filter(
                                                                 (value) => value !== issue.value
                                                             );
                                                         field.onChange(updatedIssues);
-                                                    }}
-                                                />
-                                                <FormLabel className="font-normal cursor-pointer">{issue.label}</FormLabel>
+                                                    };
+                                                    
+                                                    return (
+                                                        <>
+                                                            <Checkbox
+                                                                id={`issue-${issue.value}`}
+                                                                checked={field.value?.includes(issue.value)}
+                                                                onCheckedChange={() => toggleIssue()}
+                                                            />
+                                                            <FormLabel 
+                                                                htmlFor={`issue-${issue.value}`}
+                                                                className="font-normal cursor-pointer w-full"
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    toggleIssue();
+                                                                }}
+                                                            >
+                                                                {issue.label}
+                                                            </FormLabel>
+                                                        </>
+                                                    );
+                                                })()}
                                             </div>
                                         ))}
                                     </div>
