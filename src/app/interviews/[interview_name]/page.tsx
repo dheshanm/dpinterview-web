@@ -29,7 +29,7 @@ import FileInfoCard, { FileInfoCardProps } from '@/components/domain/FileInfoCar
 import InterviewPartCard, { updateInterviewPartCardProps } from '@/components/domain/InterviewPartCard';
 
 import InterviewTimelineS from '@/components/domain/InterviewTimelineS';
-import InterviewRunsheet from '@/components/domain/InterviewRunsheet';
+// import InterviewRunsheet from '@/components/domain/InterviewRunsheet';
 import QcForm from '@/components/domain/QcForm';
 import InterviewTranscript from '@/components/domain/InterviewTranscript';
 
@@ -357,9 +357,9 @@ export default function Page({
                             <Tabs aria-label="Basic tabs" defaultValue={0} sx={{ mt: 3 }}>
                                 <TabList>
                                     <Tab>⏱️ Interview Timeline</Tab>
-                                    <Tab>📝 Run Sheet</Tab>
                                     <Tab>🚩 QC Issues</Tab>
                                     <Tab>📄 Transcript</Tab>
+                                    {/* <Tab>📝 Run Sheet</Tab> */}
                                 </TabList>
                                 <TabPanel value={0}>
                                     <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
@@ -370,45 +370,23 @@ export default function Page({
                                 </TabPanel>
                                 <TabPanel value={1}>
                                     <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
-                                        <strong>Run Sheet</strong>
-                                    </Typography>
-
-                                    <InterviewRunsheet interviewName={interview_name} />
-                                </TabPanel>
-                                <TabPanel value={2}>
-                                    <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
                                         <strong>QC Issues</strong>
                                     </Typography>
 
                                     <QcForm interviewName={interview_name} />
                                 </TabPanel>
-                                <TabPanel value={3}>
+                                <TabPanel value={2}>
                                     <InterviewTranscript interviewName={interview_name} />
                                 </TabPanel>
+                                {/* <TabPanel value={1}>
+                                    <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
+                                        <strong>Run Sheet</strong>
+                                    </Typography>
+
+                                    <InterviewRunsheet interviewName={interview_name} />
+                                </TabPanel> */}
                             </Tabs>
                         </Box>
-
-                        {/* <Stack 
-                            direction="row" 
-                            spacing={2}
-                            sx={{ width: '100%', display: { xs: 'none', md: 'flex' } }}
-                        >
-                            <Box sx={{ width: '50%' }}>
-                                <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
-                                    <strong>Interview Timeline</strong>
-                                </Typography>
-
-                                <InterviewTimelineS interviewName={interview_name} />
-                            </Box>
-                            <Box sx={{ width: '50%' }}>
-                                <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
-                                    <strong>Run Sheet</strong>
-                                </Typography>
-
-                                <InterviewRunsheet interviewName={interview_name} />
-
-                            </Box>
-                        </Stack> */}
 
                     </div>
                 ) : (
@@ -419,13 +397,13 @@ export default function Page({
                             <Empty description="No interview data available" />
                         </div>
 
-                        <div className='mb-32'>
+                        {/* <div className='mb-32'>
                             <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
                                 <strong>Run Sheet</strong>
                             </Typography>
 
                             <InterviewRunsheet interviewName={interview_name} />
-                        </div>
+                        </div> */}
                     </div>
                 )
             )}

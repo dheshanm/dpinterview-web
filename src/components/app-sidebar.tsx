@@ -44,21 +44,21 @@ export const navData = {
                     url: "/issues/unlabelledAudio",
                     isActive: false,
                 },
-                {
-                    title: "Missing Interviews",
-                    url: "/issues/missing",
-                    isActive: false,
-                },
-                {
-                    title: "Missing Runsheets",
-                    url: "/issues/noRunsheet",
-                    isActive: false,
-                },
-                {
-                    title: "Missing Transcripts",
-                    url: "/issues/noTranscript",
-                    isActive: false,
-                },
+                // {
+                //     title: "Missing Interviews",
+                //     url: "/issues/missing",
+                //     isActive: false,
+                // },
+                // {
+                //     title: "Missing Runsheets",
+                //     url: "/issues/noRunsheet",
+                //     isActive: false,
+                // },
+                // {
+                //     title: "Missing Transcripts",
+                //     url: "/issues/noTranscript",
+                //     isActive: false,
+                // },
             ],
         },
         {
@@ -76,7 +76,7 @@ export const navData = {
         },
         {
             title: "Superset",
-            url: "http://localhost:8088",
+            url: `${process.env.NEXT_PUBLIC_SUPERSET_ENDPOINT}`,
             icon: LayoutDashboard,
         },
     ],

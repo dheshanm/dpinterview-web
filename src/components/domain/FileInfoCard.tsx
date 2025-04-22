@@ -253,6 +253,12 @@ export default function FileInfoCard(props: FileInfoCardProps) {
         // Replace the children of the 'Tags' item with the Stack of Chips
         items[4].children = tagsComponent;
     }
+    
+    const endpoint = process.env.NEXT_PUBLIC_MEDIA_SERVER_ENDPOINT;
+    const srcPath = `${endpoint}/payload=%5B${props.file_path}%5D`;
+
+    console.log('srcPath', srcPath);
+    console.log('superset', process.env.NEXT_PUBLIC_SUPERSET_ENDPOINT);
 
     return (
         <div>
@@ -261,7 +267,7 @@ export default function FileInfoCard(props: FileInfoCardProps) {
                 {props.file_path && (
                     render_element === 'audio' ? (
                         <audio
-                            src={`http://localhost:45000/payload=%5B${props.file_path}%5D`}
+                            src={`${process.env.NEXT_PUBLIC_MEDIA_SERVER_ENDPOINT}/payload=%5B${props.file_path}%5D`}
                             controls
                             style={{ width: '100%' }}
                             onError={() => {
@@ -270,7 +276,7 @@ export default function FileInfoCard(props: FileInfoCardProps) {
                         />
                     ) : (
                         <video
-                            src={`http://localhost:45000/payload=%5B${props.file_path}%5D`}
+                            src={srcPath}
                             controls
                             onError={() => {
                                 toast.error("Failed to load video file. The file may be missing or the media server is not running.");

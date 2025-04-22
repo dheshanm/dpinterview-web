@@ -35,7 +35,7 @@ export default function Home() {
                             </Typography>
                         </div>
                     </Link>
-                    <Link href="/issues/missing" underline="none" color="inherit">
+                    {/* <Link href="/issues/missing" underline="none" color="inherit">
                         <div className="border border-l-4 border-l-blue-400 rounded-lg p-4 hover:shadow-md transition-shadow bg-blue-50/30">
                             <Typography level="h4" sx={{ mb: 2, color: 'text.secondary' }}>
                                 📁 Missing Interviews
@@ -64,7 +64,7 @@ export default function Home() {
                                 List interviews with video / audio data, but no associated runsheets.
                             </Typography>
                         </div>
-                    </Link>
+                    </Link> */}
                 </div>
 
                 <Typography level="body-md" sx={{ mt: 4, color: 'text.tertiary' }}>

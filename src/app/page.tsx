@@ -30,7 +30,7 @@ export default function Home() {
                             </Typography>
                         </div>
                     </Link>
-                    <Link href="http://localhost:8088" underline="none" color="inherit" target="_blank">
+                    <Link href={process.env.NEXT_PUBLIC_SUPERSET_ENDPOINT} underline="none" color="inherit" target="_blank">
                         <div className="border border-l-4 border-l-teal-400 rounded-lg p-4 hover:shadow-md transition-shadow bg-teal-50/30">
                             <Typography level="h4" sx={{ mb: 2, color: 'text.secondary' }}>
                                 📊 Real-time Monitoring

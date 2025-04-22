@@ -3,15 +3,24 @@ import { Pool } from 'pg';
 let connection: Pool | undefined;
 
 if (!connection) {
+    const user = process.env.PG_user;
+    const host = process.env.PG_host;
+    const database = process.env.PG_database;
+    const password = process.env.PG_password;
+    const port = process.env.PG_port ? parseInt(process.env.PG_port, 10) : undefined;
+    if (!user || !host || !database || !password || !port) {
+        throw new Error("Database connection parameters are not set in environment variables");
+    }
+
     connection = new Pool({
-        user: process.env.PG_user,
-        host: process.env.PG_host,
-        database: process.env.PG_database,
-        password: process.env.PG_password,
-        port: process.env.PG_port ? parseInt(process.env.PG_port, 10) : undefined,
-        ssl: {
-            rejectUnauthorized: false,
-        }
+        user: user,
+        host: host,
+        database: database,
+        password: password,
+        port: port,
+        // ssl: {
+        //     rejectUnauthorized: false,
+        // }
     });
 }
 
