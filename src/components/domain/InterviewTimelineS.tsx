@@ -9,6 +9,8 @@ import { Reviews } from '@mui/icons-material';
 import { DoneAll } from '@mui/icons-material';
 import { Transform } from '@mui/icons-material';
 import { Analytics } from '@mui/icons-material';
+import { Rule } from '@mui/icons-material';  // QC
+import { PictureAsPdf } from '@mui/icons-material';  // PDF Report
 import { Skeleton } from '@mui/material';
 
 import { formatDistanceToNow } from 'date-fns';
@@ -48,7 +50,7 @@ export default function InterviewTimelineS(props: InterviewTimelineSProps) {
         if (!processingData) {
             return;
         }
-        
+
         const events: TimelineEvent[] = [];
 
         // Map the processing data to timeline events
@@ -207,7 +209,52 @@ export default function InterviewTimelineS(props: InterviewTimelineSProps) {
             };
             events.push(openFaceEvent);
         }
-        
+
+        if (processingData.openface_qc !== null) {
+            const openfaceQcData = processingData.openface_qc;
+            const description = openfaceQcData.passed 
+                ? `Passed (${Math.floor(openfaceQcData.successful_frames_percentage)}% frames)` 
+                : `Failed (${Math.floor(openfaceQcData.successful_frames_percentage)}% frames)`;
+            const openFaceQcEvent: TimelineEvent = {
+                title: 'OpenFace QC',
+                description: description,
+                icon: <Rule />,
+                iconColor: openfaceQcData.passed ? 'success' : 'warning',
+                altText: new Date(openfaceQcData.timestamp).toLocaleDateString(),
+                altDescription: formatDistanceToNow(new Date(openfaceQcData.timestamp), { addSuffix: true }),
+            };
+            events.push(openFaceQcEvent);
+        } else {
+            const openFaceQcEvent: TimelineEvent = {
+                title: 'OpenFace QC',
+                description: 'Pending',
+                icon: <Rule />,
+                iconColor: 'grey',
+            };
+            events.push(openFaceQcEvent);
+        }
+
+        if (processingData.pdf_report !== null) {
+            const pdfReportData = processingData.pdf_report;
+            const pdfReportEvent: TimelineEvent = {
+                title: 'PDF Report',
+                description: 'Generated',
+                icon: <PictureAsPdf />,
+                iconColor: 'primary',
+                altText: new Date(pdfReportData.timestamp).toLocaleDateString(),
+                altDescription: formatDistanceToNow(new Date(pdfReportData.timestamp), { addSuffix: true }),
+            };
+            events.push(pdfReportEvent);
+        } else {
+            const pdfReportEvent: TimelineEvent = {
+                title: 'PDF Report',
+                description: 'Pending',
+                icon: <PictureAsPdf />,
+                iconColor: 'grey',
+            };
+            events.push(pdfReportEvent);
+        }
+
         setInterviewTimelineEvents(events);
     }, [processingData]);
 
