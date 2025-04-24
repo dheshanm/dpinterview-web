@@ -9,9 +9,6 @@ import Skeleton from '@mui/material/Skeleton';
 import { SimpleTreeView } from '@mui/x-tree-view/SimpleTreeView';
 import { TreeItem } from '@mui/x-tree-view/TreeItem';
 
-// import Backdrop from '@mui/material/Backdrop';
-// import CircularProgress from '@mui/material/CircularProgress';
-
 import Box from '@mui/material/Box';
 
 import Tabs from '@mui/joy/Tabs';
@@ -31,7 +28,8 @@ import InterviewPartCard, { updateInterviewPartCardProps } from '@/components/do
 import InterviewTimelineS from '@/components/domain/InterviewTimelineS';
 // import InterviewRunsheet from '@/components/domain/InterviewRunsheet';
 import QcForm from '@/components/domain/QcForm';
-import InterviewTranscript from '@/components/domain/InterviewTranscript';
+// import InterviewTranscript from '@/components/domain/InterviewTranscript';
+import InterviewPdfReport from '@/components/domain/InterviewPdfReport';
 
 const { Paragraph } = AntTypography;
 
@@ -358,7 +356,8 @@ export default function Page({
                                 <TabList>
                                     <Tab>⏱️ Interview Timeline</Tab>
                                     <Tab>🚩 QC Issues</Tab>
-                                    <Tab>📄 Transcript</Tab>
+                                    <Tab>📄 PDF Report</Tab>
+                                    {/* <Tab>📄 Transcript</Tab> */}
                                     {/* <Tab>📝 Run Sheet</Tab> */}
                                 </TabList>
                                 <TabPanel value={0}>
@@ -376,8 +375,11 @@ export default function Page({
                                     <QcForm interviewName={interview_name} />
                                 </TabPanel>
                                 <TabPanel value={2}>
-                                    <InterviewTranscript interviewName={interview_name} />
+                                    <InterviewPdfReport interviewName={interview_name} />
                                 </TabPanel>
+                                {/* <TabPanel value={4}>
+                                    <InterviewTranscript interviewName={interview_name} />
+                                </TabPanel> */}
                                 {/* <TabPanel value={1}>
                                     <Typography level="title-lg" textColor="text.secondary" sx={{ mt: 3 }}>
                                         <strong>Run Sheet</strong>

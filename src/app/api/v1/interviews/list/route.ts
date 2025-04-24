@@ -1,4 +1,5 @@
 import { getConnection } from "@/lib/db";
+import { unformatSQL } from "@/lib/query";
 
 /**
  * Handles the GET request to fetch interviews from the database.
@@ -14,30 +15,41 @@ export async function GET(request: Request): Promise<Response> {
     const subjectId = url.searchParams.get('subject_id');
     const type = url.searchParams.get('type');
     const limit = url.searchParams.get('limit') || 5;
+    const offset = url.searchParams.get('offset') || 0;
 
-    let query = "SELECT * FROM interviews";
+    let baseQuery = "SELECT * FROM interviews";
     const params: any[] = [];
     let paramIndex = 1;
 
     if (studyId) {
-        query += ` WHERE study_id = $${paramIndex++}`;
+        baseQuery += ` WHERE study_id = $${paramIndex++}`;
         params.push(studyId);
     }
 
     if (subjectId) {
-        query += ` ${params.length ? 'AND' : 'WHERE'} subject_id = $${paramIndex++}`;
+        baseQuery += ` ${params.length ? 'AND' : 'WHERE'} subject_id = $${paramIndex++}`;
         params.push(subjectId);
     }
 
     if (type) {
-        query += ` ${params.length ? 'AND' : 'WHERE'} interview_type = $${paramIndex++}`;
+        baseQuery += ` ${params.length ? 'AND' : 'WHERE'} interview_type = $${paramIndex++}`;
         params.push(type);
     }
 
-    query += ` LIMIT ${limit}`;
+    const countQuery = `SELECT COUNT(*) FROM (${baseQuery}) AS total_count`;
+    const countResult = await connection.query(countQuery);
+    const totalRows = countResult.rows[0].count;
 
-    const { rows } = await connection.query(query, params);
-    return new Response(JSON.stringify(rows), {
+    const limitedQuery = `${baseQuery} LIMIT ${limit} OFFSET ${offset}`;
+    const { rows } = await connection.query(limitedQuery);
+
+    const metadata = {
+        query: unformatSQL(limitedQuery),
+        totalRows,
+        limit,
+        offset,
+    };
+    return new Response(JSON.stringify({ metadata, rows }), {
         headers: {
             'Content-Type': 'application/json',
         },

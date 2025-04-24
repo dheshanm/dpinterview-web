@@ -3,6 +3,8 @@ import { FfprobeMetadata } from "@/lib/models/FfProbeMetadata";
 import { VideoQuickQc } from "@/lib/models/VideoQuickQc";
 import { VideoStream } from "@/lib/models/VideoStreams";
 import { OpenFace } from "@/lib/models/OpenFace";
+import { OpenfaceQc } from "@/lib/models/OpenfaceQc";
+import { PdfReports } from "@/lib/models/PdfReports";
 
 import { Interview, InterviewProcessingData } from "@/lib/types/interview";
 
@@ -65,6 +67,10 @@ export async function GET(request: Request): Promise<Response> {
         });
     }
 
+    const OpenfaceQcData = await OpenfaceQc.get(interview_name);
+
+    const pdfReportData = await PdfReports.get(interview_name);
+
     const interviewDate = getInterviewDate(interviews);
     const dataReceivedDate = getInterviewDataReceivedDate(interviews);
 
@@ -108,6 +114,19 @@ export async function GET(request: Request): Promise<Response> {
         openface: openFaceCount > 0 && openFaceTimestamp ? {
             count: openFaceCount,
             timestamp: openFaceTimestamp,
+        } : null,
+        openface_qc: OpenfaceQcData ? {
+            successful_frames_count: OpenfaceQcData.successful_frames_count,
+            successful_frames_percentage: OpenfaceQcData.successful_frames_percentage,
+            successful_frames_confidence_mean: OpenfaceQcData.successful_frames_confidence_mean,
+            successful_frames_confidence_std: OpenfaceQcData.successful_frames_confidence_std,
+            successful_frames_confidence_median: OpenfaceQcData.successful_frames_confidence_median,
+            passed: OpenfaceQcData.passed,
+            timestamp: OpenfaceQcData.ofqc_timestamp,
+        } : null,
+        pdf_report: pdfReportData ? {
+            pdf_report_path: pdfReportData.pr_path,
+            timestamp: pdfReportData.pr_timestamp,
         } : null,
     };
 

@@ -82,4 +82,17 @@ export type InterviewProcessingData = {
         count: number;
         timestamp: Date;
     } | null;
+    openface_qc: {
+        successful_frames_count: number;
+        successful_frames_percentage: number;
+        successful_frames_confidence_mean: number | null;
+        successful_frames_confidence_std: number | null;
+        successful_frames_confidence_median: number | null;
+        passed: boolean;
+        timestamp: Date;
+    } | null;
+    pdf_report: {
+        pdf_report_path: string;
+        timestamp: Date;
+    } | null;
 };
