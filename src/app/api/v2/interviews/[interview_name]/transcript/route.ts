@@ -22,6 +22,11 @@ export async function GET(
     // Redirect to the transcript file URL
     // http://localhost:45000/payload=[<path>]
 
-    const redirectUrl = new URL(`http://localhost:45000/payload=[${transcriptFile}]`);
+    const encodedPath = encodeURIComponent(transcriptFile);
+
+    const redirectUrl = new URL(request.url);
+    redirectUrl.pathname = '/payload';
+    redirectUrl.search = `path=${encodedPath}`;
+    
     return NextResponse.redirect(redirectUrl);
 }

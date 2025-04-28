@@ -1,7 +1,16 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+    // Other Next.js configuration options can go here
+
+    async rewrites() {
+        return [
+            {
+                source: '/payload',
+                destination: 'http://localhost:45000/payload',
+            },
+        ];
+    },
 };
 
 export default nextConfig;

@@ -254,6 +254,8 @@ export default function FileInfoCard(props: FileInfoCardProps) {
         items[4].children = tagsComponent;
     }
 
+    const redirectUrl = `/payload?path=${props.file_path}`;
+
     return (
         <div>
 
@@ -261,7 +263,7 @@ export default function FileInfoCard(props: FileInfoCardProps) {
                 {props.file_path && (
                     render_element === 'audio' ? (
                         <audio
-                            src={`http://localhost:45000/payload=%5B${props.file_path}%5D`}
+                            src={redirectUrl.toString()}
                             controls
                             style={{ width: '100%' }}
                             onError={() => {
@@ -270,7 +272,7 @@ export default function FileInfoCard(props: FileInfoCardProps) {
                         />
                     ) : (
                         <video
-                            src={`http://localhost:45000/payload=%5B${props.file_path}%5D`}
+                            src={redirectUrl.toString()}
                             controls
                             onError={() => {
                                 toast.error("Failed to load video file. The file may be missing or the media server is not running.");

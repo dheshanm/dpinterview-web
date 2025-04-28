@@ -21,7 +21,14 @@ export async function GET(
 
     // Redirect to the Report file URL
     // http://localhost:45000/payload=[<path>]
+    // Or
+    // /payload?path=[<path>]
 
-    const redirectUrl = new URL(`http://localhost:45000/payload=[${pdfReportData.pr_path}]`);
+    const encodedPath = encodeURIComponent(pdfReportData.pr_path);
+
+    const redirectUrl = new URL(request.url);
+    redirectUrl.pathname = '/payload';
+    redirectUrl.search = `path=${encodedPath}`;
+
     return NextResponse.redirect(redirectUrl);
 }
