@@ -1,8 +1,8 @@
 import { getConnection } from "@/lib/db";
 import { InterviewParts } from '@/lib/models/InterviewParts';
-import { InterviewTranscriptFiles } from "./TranscriptFiles";
+import { TranscriptFiles } from "@/lib/models/TranscriptFiles";
 
-import { DbInterview, Interview } from "@/lib/types/interview";
+import { DbInterview, Interview, DbInterviewEnhanced } from "@/lib/types/interview";
 
 export class Interviews {
     static async get(interview_name: string): Promise<Interview | null> {
@@ -22,7 +22,7 @@ export class Interviews {
 
         const row = results.rows[0] as DbInterview;
         const parts = await InterviewParts.get(interview_name);
-        const transcript_files = await InterviewTranscriptFiles.get(interview_name);
+        const transcript_files = await TranscriptFiles.getForInterview(interview_name);
         return {
             interview_name: row.interview_name,
             interview_type: row.interview_type,
@@ -31,6 +31,59 @@ export class Interviews {
             parts: parts,
             transcript_files: transcript_files,
         };
+    }
+
+    static async getBySubject(study_id: string, subject_id: string): Promise<DbInterviewEnhanced[]> {
+        const connection = getConnection();
+        const results = await connection.query(
+            `
+            SELECT *
+            FROM interviews
+            LEFT JOIN interview_parts USING (interview_name)
+            WHERE subject_id = $1 AND 
+                study_id = $2 AND
+                interview_parts.is_primary IS TRUE
+            `,
+            [subject_id, study_id]
+        );
+
+        if (results.rows.length === 0) {
+            return [];
+        }
+        
+        const rows = results.rows.map(row => ({
+            // Explicitly map fields from row to DbInterviewEnhanced properties
+            interview_name: row.interview_name,
+            interview_type: row.interview_type,
+            subject_id: row.subject_id,
+            study_id: row.study_id,
+            interview_day: row.interview_day,
+            interview_datetime: row.interview_datetime,
+        })) as DbInterviewEnhanced[];
+        return rows;
+    }
+
+    static async getBySubjectAndInterviewType(
+        study_id: string,
+        subject_id: string,
+        interview_type: string
+    ) : Promise<DbInterview[]> {
+        const connection = getConnection();
+        const results = await connection.query(
+            `
+            SELECT *
+            FROM interviews
+            WHERE subject_id = $1 AND study_id = $2 AND interview_type = $3
+            `,
+            [subject_id, study_id, interview_type]
+        );
+
+        if (results.rows.length === 0) {
+            return [];
+        }
+
+        const rows = results.rows as DbInterview[];
+        return rows;
     }
 
     static async hasDuplicate(interview_name: string): Promise<boolean> {

@@ -1,5 +1,6 @@
 "use client"
 import * as React from 'react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import Typography from '@mui/joy/Typography';
@@ -28,7 +29,7 @@ import InterviewPartCard, { updateInterviewPartCardProps } from '@/components/do
 import InterviewTimelineS from '@/components/domain/InterviewTimelineS';
 import InterviewRunsheet from '@/components/domain/InterviewRunsheet';
 import QcForm from '@/components/domain/QcForm';
-import InterviewTranscript from '@/components/domain/InterviewTranscript';
+import Transcript from '@/components/domain/TranscriptE';
 import InterviewPdfReport from '@/components/domain/InterviewPdfReport';
 
 const { Paragraph } = AntTypography;
@@ -118,6 +119,7 @@ export default function Page({
     const [selectedPartProps, setSelectedPartProps] = React.useState<updateInterviewPartCardProps | null>(
         null,
     );
+    const [currentAudioTime, setCurrentAudioTime] = React.useState<number>(0);
 
 
     useEffect(() => {
@@ -178,28 +180,32 @@ export default function Page({
         // parse to description items
         const items = [
             {
-                label: 'Interview Name',
-                children: <Paragraph copyable={{ text: interviews.interview_name }}>{interviews.interview_name ?? 'null'}</Paragraph>,
+            label: 'Interview Name',
+            children: <Paragraph copyable={{ text: interviews.interview_name }}>{interviews.interview_name ?? 'null'}</Paragraph>,
             },
             {
-                label: 'Interview Type',
-                children: interviews.interview_type,
+            label: 'Interview Type',
+            children: interviews.interview_type,
             },
             {
-                label: 'Subject ID',
-                children: interviews.subject_id,
+            label: 'Subject ID',
+            children: (
+                <Link href={`/studies/${interviews.study_id}/subjects/${interviews.subject_id}`}>
+                {interviews.subject_id}
+                </Link>
+            ),
             },
             {
-                label: 'Study ID',
-                children: interviews.study_id,
+            label: 'Study ID',
+            children: interviews.study_id,
             },
             {
-                label: '# Parts',
-                children: interviews.parts.length,
+            label: '# Parts',
+            children: interviews.parts.length,
             },
             {
-                label: '# Transcript Files',
-                children: interviews.transcript_files.length,
+            label: '# Transcript Files',
+            children: interviews.transcript_files.length,
             }
         ];
 
@@ -251,6 +257,18 @@ export default function Page({
             }
         }
     }, [lastSelectedItem, files, interviews, interview_name]);
+
+    // function updateAudioTime(newTime: number) {
+
+    //     const audio = document.querySelector('audio');
+    //     if (audio) {
+    //         audio.currentTime = newTime;
+    //     }
+    //     const video = document.querySelector('video');
+    //     if (video) {
+    //         video.currentTime = newTime;
+    //     }
+    // }
 
 
     return (
@@ -314,7 +332,12 @@ export default function Page({
 
                         <div className='m-4'>
                             {lastSelectedItem && files && files[lastSelectedItem] && selectedFileProps?.interview_name && selectedFileProps?.file_path && selectedFileProps?.file_name && selectedFileProps?.file_size_mb && selectedFileProps?.m_time && (
-                                <FileInfoCard {...selectedFileProps as FileInfoCardProps} />
+                                <FileInfoCard {
+                                    ...selectedFileProps as FileInfoCardProps
+                                }
+                                currentAudioTime={currentAudioTime}
+                                setCurrentAudioTime={setCurrentAudioTime}
+                                />
                             )}
                             {lastSelectedItem && files && !files[lastSelectedItem] && selectedPartProps && (
                                 <InterviewPartCard
@@ -385,7 +408,11 @@ export default function Page({
                                     <InterviewPdfReport interviewName={interview_name} />
                                 </TabPanel>
                                 <TabPanel value={4}>
-                                    <InterviewTranscript interviewName={interview_name} />
+                                    <Transcript 
+                                        identifier={interview_name} identifier_type='interview' 
+                                        currentAudioTime={currentAudioTime}
+                                        updateAudioTime={setCurrentAudioTime}
+                                    />
                                 </TabPanel>
                             </Tabs>
                         </Box>

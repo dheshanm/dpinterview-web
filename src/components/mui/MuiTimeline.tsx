@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Link from 'next/link';
 
 import Timeline from '@mui/lab/Timeline';
 import TimelineItem from '@mui/lab/TimelineItem';
@@ -61,7 +62,16 @@ export default function MuiTimeline(props: MuiTimelineProps) {
             <TimelineSeparator>
                 {index !== 0 && <TimelineConnector />}
                 <TimelineDot color={event.iconColor}>
-                    {event.icon}
+                    {event.href ? (
+                        <Link
+                            href={event.href}
+                            style={{ textDecoration: 'none', color: 'inherit' }}
+                        >
+                            {event.icon}
+                        </Link>
+                    ) : (
+                        event.icon
+                    )}
                 </TimelineDot>
                 {index !== props.events.length - 1 && <TimelineConnector />}
             </TimelineSeparator>

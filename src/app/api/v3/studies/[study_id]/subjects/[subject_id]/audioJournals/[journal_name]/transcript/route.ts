@@ -4,16 +4,21 @@ import { TranscriptFiles } from '@/lib/models/TranscriptFiles';
 
 export async function GET(
     request: Request,
-    props: { params: Promise<{ interview_name: string }> }
+    props: { params: Promise<{ study_id: string, subject_id: string, journal_name: string }> }
 ): Promise<Response> {
     const params = await props.params;
-    const interview_name = params.interview_name;
+    const { study_id, subject_id, journal_name } = params;
 
-    if (!interview_name) {
-        return NextResponse.json({ error: 'Missing interview_name parameter' }, { status: 400 });
+    if (!study_id || !subject_id || !journal_name) {
+        return new Response(JSON.stringify({ error: 'Missing study_id or subject_id or journal_name parameter' }), {
+            status: 400,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
     }
 
-    const transcriptFile = await TranscriptFiles.getTranscriptFile(interview_name);
+    const transcriptFile = await TranscriptFiles.getTranscriptFile(journal_name);
 
     if (!transcriptFile) {
         return NextResponse.json({ error: 'Transcript file not found' }, { status: 404 });

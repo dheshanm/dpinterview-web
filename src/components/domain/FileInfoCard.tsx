@@ -1,3 +1,5 @@
+"use client"
+import * as React from 'react';
 import { formatDistanceToNow } from 'date-fns';
 
 import { Descriptions } from 'antd';
@@ -34,6 +36,8 @@ export type FileInfoCardProps = {
     tags: string[];
     ignored: boolean;
     onTagsChange?: (tags: string[]) => void;
+    currentAudioTime?: number;
+    setCurrentAudioTime?: (time: number) => void;
 };
 
 FileInfoCard.defaultProps = {
@@ -117,6 +121,22 @@ function setRole(
 }
 
 export default function FileInfoCard(props: FileInfoCardProps) {
+    const { currentAudioTime } = props;
+
+    React.useEffect(() => {
+        if (currentAudioTime) {
+            // Get player element
+            const player = document.getElementById('player') as HTMLAudioElement | HTMLVideoElement;
+            if (player) {
+                const currentTime = player.currentTime;
+                if (Math.abs(currentTime - currentAudioTime) > 2) {
+                    player.currentTime = currentAudioTime;
+                }
+            }
+        }
+    }
+    , [currentAudioTime]);
+
     // file_path = '/mnt/ProNET/Lochness/PHOENIX/PROTECTED/PronetXX/raw/XXXXXXX/interviews/open/YYYY-MM-DD 12.00.00 RENAME BL NLP/Audio Record/audio.m4a'
     // const file_path_pretty: string | null = props.file_path ? 'PHOENIX' + (props.file_path.split('PHOENIX')[1] || props.file_path) : null;
     let render_element: string = 'video';
@@ -254,6 +274,7 @@ export default function FileInfoCard(props: FileInfoCardProps) {
         items[4].children = tagsComponent;
     }
 
+
     return (
         <div>
 
@@ -261,19 +282,33 @@ export default function FileInfoCard(props: FileInfoCardProps) {
                 {props.file_path && (
                     render_element === 'audio' ? (
                         <audio
+                            id="player"
                             src={`http://localhost:45000/payload=%5B${props.file_path}%5D`}
                             controls
                             style={{ width: '100%' }}
                             onError={() => {
                                 toast.error("Failed to load audio file. The file may be missing or the media server is not running.");
                             }}
+                            onTimeUpdate={(e) => {
+                                if (props.setCurrentAudioTime) {
+                                    const audio = e.target as HTMLAudioElement;
+                                    props.setCurrentAudioTime(audio.currentTime);
+                                }
+                            }}
                         />
                     ) : (
                         <video
+                            id="player"
                             src={`http://localhost:45000/payload=%5B${props.file_path}%5D`}
                             controls
                             onError={() => {
                                 toast.error("Failed to load video file. The file may be missing or the media server is not running.");
+                            }}
+                            onTimeUpdate={(e) => {
+                                if (props.setCurrentAudioTime) {
+                                    const video = e.target as HTMLVideoElement;
+                                    props.setCurrentAudioTime(video.currentTime);
+                                }
                             }}
                         />
                     )

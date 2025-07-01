@@ -3,8 +3,8 @@ import { getConnection } from "@/lib/db";
 import { DbFile } from "@/lib/types/file";
 import { DbTranscriptFiles, InterviewTranscriptFile } from "@/lib/types/interview";
 
-export class InterviewTranscriptFiles {
-    static async get(interview_name: string): Promise<InterviewTranscriptFile[]> {
+export class TranscriptFiles {
+    static async getForInterview(interview_name: string): Promise<InterviewTranscriptFile[]> {
         const connection = getConnection();
         const results = await connection.query(
             `

@@ -7,7 +7,8 @@ import {
     Github,
     LayoutDashboard,
     MessageSquareWarning,
-    Video
+    Video,
+    Voicemail
 } from "lucide-react"
 
 import Link from "next/link"
@@ -67,6 +68,12 @@ export const navData = {
             url: "/interviews",
             items: [],
         },
+        {
+            title: "Audio Journals",
+            icon: Voicemail,
+            url: "/journals",
+            items: [],
+        },
     ],
     navSecondary: [
         {
@@ -96,7 +103,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                 </div>
                                 <div className="flex flex-col gap-0.5 leading-none">
                                     <span className="font-semibold">AV QC Portal</span>
-                                    <span className="">v0.1.0</span>
+                                    <span className="">v0.2.0</span>
                                 </div>
                             </Link>
                         </SidebarMenuButton>
